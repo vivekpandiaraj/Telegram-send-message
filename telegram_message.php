@@ -1,19 +1,19 @@
 <?php	
-function sendMessage($chatID, $messaggio, $token) {
+function sendMessage($chatID, $message) {
+    $token = "Your Bot Token which is available in Botfather";
     $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
-    $url = $url . "&text=" . urlencode($messaggio);
+    $url = $url . "&text=" . urlencode($message);
     $ch = curl_init($url); 
     $optArray = array(
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_SSL_VERIFYPEER => false, //make this enable in SSL Connection if need
-        CURLOPT_SSL_VERIFYHOST => false  //make this enable in SSL Connection if need
+        CURLOPT_SSL_VERIFYPEER => false, 
+        CURLOPT_SSL_VERIFYHOST => false  
     );
     curl_setopt_array($ch, $optArray);
     $result = curl_exec($ch);
     if ($result === false) {
         $myres= 'Curl error: ' . curl_error($ch);
     } else {
-        //print_r($response); //you can get complete server side response here
         $response = json_decode($result, true);
         if (isset($response['ok']) && $response['ok'] === true) {
             $myres= 'Message sent successfully';
@@ -24,9 +24,8 @@ function sendMessage($chatID, $messaggio, $token) {
     curl_close($ch);
     return $myres;
     }
-$token = "Your Bot Token which is available in Botfather";
 $chatid = "Your Target Telegram Numeric id"; //You can find chat id using https://web.telegram.org/ in url bar. 
 $yourmessage="Message here";    
-echo sendMessage($chatid, $yourmessage , $token);
+echo sendMessage($chatid, $yourmessage);
 //Note: Target user(Chat id/Receiver) might be send atleast one message to bot to get message proper. 
 ?>
